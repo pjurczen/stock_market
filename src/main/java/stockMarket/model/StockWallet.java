@@ -2,6 +2,7 @@ package stockMarket.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -14,13 +15,16 @@ public class StockWallet {
         this.account = new HashMap<Stock, Long>();
     }
     
-    public Map<Stock, Long> getStocks() {
-        return new HashMap<Stock, Long>(account);
+    public Set<Stock> getStocks() {
+        return account.keySet();
     }
 
     public void removeStocks(Stock stocks) {
-        if(account.get(stocks).compareTo(stocks.getAmmount()) == -1) {
-            account.replace(stocks, account.get(stocks) - stocks.getAmmount());
+        if(account.get(stocks) > stocks.getAmmount()) {
+            long stocksAmmountLeft = account.get(stocks) - stocks.getAmmount();
+            Stock stocksLeft = new Stock(stocks.getCompanyName(), stocks.getValue(), stocksAmmountLeft);
+            account.remove(stocks);
+            account.put(stocksLeft, stocksAmmountLeft);
         } else {
             account.remove(stocks);
         }
@@ -28,7 +32,10 @@ public class StockWallet {
 
     public void addStocks(Stock stocks) {
         if(account.containsKey(stocks)) {
-            account.replace(stocks, account.get(stocks) + stocks.getAmmount());
+            long ammountToPut = account.get(stocks) + stocks.getAmmount();
+            Stock stocksToPut = new Stock(stocks.getCompanyName(),stocks.getValue(), ammountToPut);
+            account.remove(stocks);
+            account.put(stocksToPut, ammountToPut);
         } else {
             account.put(stocks, stocks.getAmmount());
         }

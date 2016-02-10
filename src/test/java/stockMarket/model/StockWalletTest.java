@@ -26,7 +26,12 @@ public class StockWalletTest {
         stockWallet.addStocks(stock);
         //then
         assertNotNull(stockWallet.getStocks());
-        assertEquals(expectedAmmount, stockWallet.getStocks().get(stock).longValue());
+        assertEquals(expectedAmmount, stockWallet.getStocks()
+                                                    .stream()
+                                                    .filter(x-> x.equals(stock))
+                                                    .findFirst()
+                                                    .get()
+                                                    .getAmmount());
     }
     
     @Test
@@ -40,7 +45,12 @@ public class StockWalletTest {
         stockWallet.addStocks(stock);
         //then
         assertNotNull(stockWallet.getStocks());
-        assertEquals(expectedAmmount, stockWallet.getStocks().get(stock).longValue());
+        assertEquals(expectedAmmount, stockWallet.getStocks()
+                                                    .stream()
+                                                    .filter(x-> x.equals(stock))
+                                                    .findFirst()
+                                                    .get()
+                                                    .getAmmount());
     }
     
     @Test
@@ -51,6 +61,6 @@ public class StockWalletTest {
         stockWallet.addStocks(stock);
         stockWallet.removeStocks(stock);
         //then
-        assertFalse(stockWallet.getStocks().containsKey(stock));
+        assertFalse(stockWallet.getStocks().contains(stock));
     }
 }
