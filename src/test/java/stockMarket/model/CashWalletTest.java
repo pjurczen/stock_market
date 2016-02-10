@@ -34,7 +34,7 @@ public class CashWalletTest {
     @DirtiesContext
     public void shouldSumCashWhenExisted() {
         //given
-        Cash cash = new Cash("PLN", 1, 5001);
+        Cash cash = new Cash("PLN", 1, 500);
         //when
         long expectedAmmount = 1000;
         cashWallet.deposit(cash);
