@@ -9,12 +9,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class CashWallet {
 
-    private Map<Cash, Long> account;
+    private Map<CashTo, Long> account;
     private double euroSellingRate;
     private double euroBuyingRate;
     
     public CashWallet() {
-        this.account = new HashMap<Cash, Long>();
+        this.account = new HashMap<CashTo, Long>();
+        CashTo startingCash = new CashTo("PLN", 1, 10000);
+        account.put(startingCash, startingCash.getAmmount());
     }
     
     public void closeDay() {
@@ -26,22 +28,22 @@ public class CashWallet {
         computeBalanceToPLN();
     }
     
-    public Cash getBalanceInPLN() {
+    public CashTo getBalanceInPLN() {
         return account.keySet()
                         .stream()
-                        .filter(x -> x.equals(new Cash("PLN", 1, 0)))
+                        .filter(x -> x.equals(new CashTo("PLN", 1, 0)))
                         .findFirst()
                         .get();
     }
     
-    public Set<Cash> getBalance() {
+    public Set<CashTo> getBalance() {
         return account.keySet();
     }
 
-    public Cash withdraw(Cash cash) {
+    public CashTo withdraw(CashTo cash) {
         if(getBalanceInPLN().getAmmount() >= cash.getAmmount()) {
             long balanceLeft = getBalanceInPLN().getAmmount() - cash.getAmmount();
-            Cash cashLeft = new Cash("PLN", 1, balanceLeft);
+            CashTo cashLeft = new CashTo("PLN", 1, balanceLeft);
             account.remove(cash);
             account.put(cashLeft, balanceLeft);
             return cash;
@@ -49,10 +51,10 @@ public class CashWallet {
         return null;
     }
     
-    public void deposit(Cash cash) {
+    public void deposit(CashTo cash) {
         if(account.containsKey(cash)) {
             long ammountToDeposit = account.get(cash) + cash.getAmmount();
-            Cash cashToDeposit = new Cash(cash.getCurrency(), cash.getRatio(), ammountToDeposit);
+            CashTo cashToDeposit = new CashTo(cash.getCurrency(), cash.getRatio(), ammountToDeposit);
             account.remove(cash);
             account.put(cashToDeposit, ammountToDeposit);
         } else {
@@ -63,32 +65,32 @@ public class CashWallet {
     private void setRates() {
         euroBuyingRate = 1.02*(3.9 + 0.2*Math.random());
         euroSellingRate = 0.98*(3.9 + 0.2*Math.random());
-        if(account.containsKey(new Cash("EUR", 0, 0))) {
-            Cash tmpCash = account.keySet()
+        if(account.containsKey(new CashTo("EUR", 0, 0))) {
+            CashTo tmpCash = account.keySet()
                                     .stream()
-                                    .filter(x -> x.equals(new Cash("EUR", 1, 0)))
+                                    .filter(x -> x.equals(new CashTo("EUR", 1, 0)))
                                     .findFirst()
                                     .get();
             account.remove(tmpCash);
-            account.put(new Cash("EUR", euroSellingRate, tmpCash.getAmmount()), tmpCash.getAmmount());
+            account.put(new CashTo("EUR", euroSellingRate, tmpCash.getAmmount()), tmpCash.getAmmount());
         }
     }
     
     private void computeBalanceToPLN() {
         long equalityInPLN = 0;
-        for(Map.Entry<Cash, Long> entry : account.entrySet()) {
+        for(Map.Entry<CashTo, Long> entry : account.entrySet()) {
             equalityInPLN += entry.getValue() * entry.getKey().getRatio();
         }
         account.clear();
-        account.put(new Cash("PLN", 1, equalityInPLN), equalityInPLN);
+        account.put(new CashTo("PLN", 1, equalityInPLN), equalityInPLN);
     }
     
     private void computeBalanceToHalfInEuro() {
-        Cash tmpCash = getBalanceInPLN();
+        CashTo tmpCash = getBalanceInPLN();
         account.clear();
         long euroToDeposit = (long)(0.5*tmpCash.getAmmount()/euroBuyingRate);
-        account.put(new Cash("EUR", euroSellingRate, euroToDeposit), euroToDeposit);
+        account.put(new CashTo("EUR", euroSellingRate, euroToDeposit), euroToDeposit);
         long plnsLeft = tmpCash.getAmmount() - (long)(euroToDeposit*euroBuyingRate);
-        account.put(new Cash("PLN", 1, plnsLeft), plnsLeft);
+        account.put(new CashTo("PLN", 1, plnsLeft), plnsLeft);
     }
 }

@@ -20,7 +20,7 @@ public class StockWalletTest {
     @DirtiesContext
     public void shouldAddStocks() {
         //given
-        Stock stock = new Stock("INTEL", 24.1, 500);
+        StockTo stock = new StockTo("INTEL", 24.1, 500);
         //when
         long expectedAmmount = 500;
         stockWallet.addStocks(stock);
@@ -38,7 +38,7 @@ public class StockWalletTest {
     @DirtiesContext
     public void shouldSumStocksWhenExisted() {
         //given
-        Stock stock = new Stock("INTEL", 24.1, 500);
+        StockTo stock = new StockTo("INTEL", 24.1, 500);
         //when
         long expectedAmmount = 1000;
         stockWallet.addStocks(stock);
@@ -56,7 +56,7 @@ public class StockWalletTest {
     @Test
     public void shouldRemoveStocksWhenExisted() {
         //given
-        Stock stock = new Stock("INTEL", 24.1, 500);
+        StockTo stock = new StockTo("INTEL", 24.1, 500);
         //when
         stockWallet.addStocks(stock);
         stockWallet.removeStocks(stock);

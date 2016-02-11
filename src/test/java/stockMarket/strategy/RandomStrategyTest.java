@@ -1,4 +1,4 @@
-package stockMarket.model;
+package stockMarket.strategy;
 
 import static org.junit.Assert.*;
 
@@ -12,32 +12,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import stockMarket.model.CashTo;
+import stockMarket.model.StockTo;
+import stockMarket.strategy.Strategy;
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "CommonModelTest-context.xml")
+@ContextConfiguration(locations = "CommonStrategyTest-context.xml")
 public class RandomStrategyTest {
 
     @Autowired
     private Strategy strategy;
     
-    Set<Stock> stocks;
-    Set<Stock> clientStocks;
+    Set<StockTo> stocks;
+    Set<StockTo> clientStocks;
+    CashTo myCash;
     
     @Before
     public void prepare() {
-        stocks = new HashSet<Stock>();
-        clientStocks = new HashSet<Stock>();
-        Stock intelStocks = new Stock("INTEL", 21.3, 10);
-        Stock hpStocks = new Stock("HP", 11.2, 15);
+        stocks = new HashSet<StockTo>();
+        clientStocks = new HashSet<StockTo>();
+        StockTo intelStocks = new StockTo("INTEL", 21.3, 10);
+        StockTo hpStocks = new StockTo("HP", 11.2, 15);
+        StockTo appleStocks = new StockTo("Apple", 100.2, 16);
         stocks.add(intelStocks);
         stocks.add(hpStocks);
+        stocks.add(appleStocks);
         clientStocks.add(hpStocks);
+        clientStocks.add(appleStocks);
+        clientStocks.add(intelStocks);
+        myCash = new CashTo("PLN", 1, 500);
     }
     
     @Test
     public void shouldChooseStockToBuy() {
         //given
         //when
-        Stock stocksToBuy = strategy.chooseStockToBuy(stocks);
+        StockTo stocksToBuy = strategy.chooseStockToBuy(stocks, myCash);
         //then
         assertNotNull(stocksToBuy);
     }
@@ -46,7 +56,7 @@ public class RandomStrategyTest {
     public void shouldChooseStockToSell() {
         //given
         //when
-        Stock stocksToSell = strategy.chooseStockToSell(stocks, clientStocks);
+        StockTo stocksToSell = strategy.chooseStockToSell(stocks, clientStocks);
         //then
         assertNotNull(stocksToSell);
     }

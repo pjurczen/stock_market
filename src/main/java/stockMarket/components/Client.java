@@ -1,5 +1,9 @@
 package stockMarket.components;
 
-public interface Client {
+import stockMarket.strategy.Strategy;
 
+public interface Client {
+    void buy();
+    void sell();
+    void setStrategy(Strategy strategy);
 }

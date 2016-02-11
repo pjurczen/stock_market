@@ -9,20 +9,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class StockWallet {
 
-    private Map<Stock, Long> account;
+    private Map<StockTo, Long> account;
 
     public StockWallet() {
-        this.account = new HashMap<Stock, Long>();
+        this.account = new HashMap<StockTo, Long>();
     }
     
-    public Set<Stock> getStocks() {
+    public Set<StockTo> getStocks() {
         return account.keySet();
     }
 
-    public void removeStocks(Stock stocks) {
+    public void removeStocks(StockTo stocks) {
         if(account.get(stocks) > stocks.getAmmount()) {
             long stocksAmmountLeft = account.get(stocks) - stocks.getAmmount();
-            Stock stocksLeft = new Stock(stocks.getCompanyName(), stocks.getValue(), stocksAmmountLeft);
+            StockTo stocksLeft = new StockTo(stocks.getCompanyName(), stocks.getValue(), stocksAmmountLeft);
             account.remove(stocks);
             account.put(stocksLeft, stocksAmmountLeft);
         } else {
@@ -30,10 +30,10 @@ public class StockWallet {
         }
     }
 
-    public void addStocks(Stock stocks) {
+    public void addStocks(StockTo stocks) {
         if(account.containsKey(stocks)) {
             long ammountToPut = account.get(stocks) + stocks.getAmmount();
-            Stock stocksToPut = new Stock(stocks.getCompanyName(),stocks.getValue(), ammountToPut);
+            StockTo stocksToPut = new StockTo(stocks.getCompanyName(),stocks.getValue(), ammountToPut);
             account.remove(stocks);
             account.put(stocksToPut, ammountToPut);
         } else {

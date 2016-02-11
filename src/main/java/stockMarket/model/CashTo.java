@@ -1,11 +1,11 @@
 package stockMarket.model;
 
-public class Cash {
+public class CashTo {
     private String currency;
     private double ratio;
     private long ammount;
     
-    public Cash(String currency, double ratio, long ammount) {
+    public CashTo(String currency, double ratio, long ammount) {
         this.currency = currency;
         this.ratio = ratio;
         this.ammount = ammount;
@@ -51,7 +51,7 @@ public class Cash {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Cash other = (Cash) obj;
+        CashTo other = (CashTo) obj;
         if (currency == null) {
             if (other.currency != null)
                 return false;

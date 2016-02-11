@@ -1,11 +1,11 @@
 package stockMarket.model;
 
-public class Stock {
+public class StockTo {
     private String companyName;
     private double value;
     private long ammount;
     
-    public Stock(String companyName, double value, long ammount) {
+    public StockTo(String companyName, double value, long ammount) {
         this.companyName = companyName;
         this.value = value;
         this.ammount = ammount;
@@ -51,7 +51,7 @@ public class Stock {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Stock other = (Stock) obj;
+        StockTo other = (StockTo) obj;
         if (companyName == null) {
             if (other.companyName != null)
                 return false;

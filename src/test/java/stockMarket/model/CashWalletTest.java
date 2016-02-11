@@ -20,9 +20,9 @@ public class CashWalletTest {
     @DirtiesContext
     public void shouldAddCash() {
         //given
-        Cash cash = new Cash("PLN", 1, 500);
+        CashTo cash = new CashTo("PLN", 1, 500);
         //when
-        long expectedAmmount = 500;
+        long expectedAmmount = cashWallet.getBalanceInPLN().getAmmount() + 500;
         cashWallet.deposit(cash);
         //then
         assertNotNull(cashWallet.getBalance());
@@ -33,9 +33,9 @@ public class CashWalletTest {
     @DirtiesContext
     public void shouldSumCashWhenExisted() {
         //given
-        Cash cash = new Cash("PLN", 1, 500);
+        CashTo cash = new CashTo("PLN", 1, 500);
         //when
-        long expectedAmmount = 1000;
+        long expectedAmmount = cashWallet.getBalanceInPLN().getAmmount() + 1000;
         cashWallet.deposit(cash);
         cashWallet.deposit(cash);
         //then
@@ -47,13 +47,13 @@ public class CashWalletTest {
     @DirtiesContext
     public void shouldWithdrawCash() {
         //given
-        Cash cash = new Cash("PLN", 1, 500);
-        Cash cashToWithdraw = new Cash("PLN", 1, 300);
+        CashTo cash = new CashTo("PLN", 1, 500);
+        CashTo cashToWithdraw = new CashTo("PLN", 1, 300);
         //when
         long expectedWithdrawn = cashToWithdraw.getAmmount();
-        long expectedBalance = cash.getAmmount() - cashToWithdraw.getAmmount();
+        long expectedBalance = cashWallet.getBalanceInPLN().getAmmount() + cash.getAmmount() - cashToWithdraw.getAmmount();
         cashWallet.deposit(cash);
-        Cash cashFromWallet = cashWallet.withdraw(cashToWithdraw);
+        CashTo cashFromWallet = cashWallet.withdraw(cashToWithdraw);
         //then
         assertNotNull(cashWallet.getBalance());
         assertEquals(expectedBalance, cashWallet.getBalanceInPLN().getAmmount());
@@ -64,8 +64,8 @@ public class CashWalletTest {
     @DirtiesContext
     public void shouldOpenDay() {
         //given
-        Cash plns = new Cash("PLN", 1, 500);
-        Cash euros = new Cash("EUR", 4.2, 300);
+        CashTo plns = new CashTo("PLN", 1, 500);
+        CashTo euros = new CashTo("EUR", 4.2, 300);
         //when
         cashWallet.deposit(plns);
         cashWallet.deposit(euros);
@@ -80,8 +80,8 @@ public class CashWalletTest {
     @DirtiesContext
     public void shouldCloseDay() {
         //given
-        Cash plns = new Cash("PLN", 1, 500);
-        Cash euros = new Cash("EUR", 4.2, 300);
+        CashTo plns = new CashTo("PLN", 1, 500);
+        CashTo euros = new CashTo("EUR", 4.2, 300);
         //when
         cashWallet.deposit(plns);
         cashWallet.deposit(euros);
