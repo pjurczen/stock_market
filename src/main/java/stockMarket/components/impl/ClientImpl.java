@@ -4,7 +4,6 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +23,6 @@ public class ClientImpl extends Observer implements Client {
     private StockWallet stockWallet;
     private Strategy strategy;
     private StockBroker stockBroker;
-    private LocalDate currentDate;
     private Set<StockTo> currentStocksInMarket;
     
     @Autowired
@@ -38,8 +36,11 @@ public class ClientImpl extends Observer implements Client {
     
     @PostConstruct
     public void setUp() {
-        currentDate = stockMarketSimulator.getDate();
-        currentStocksInMarket = stockBroker.getStockPrices(currentDate);
+        try {
+            currentStocksInMarket = stockBroker.getStockPrices();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

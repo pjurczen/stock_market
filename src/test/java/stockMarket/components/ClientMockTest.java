@@ -3,7 +3,6 @@ package stockMarket.components;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -36,14 +35,12 @@ public class ClientMockTest {
     private RandomStrategy strategy;
     
     private StockMarketSimulatorImpl stockMarketSimulator;
-    private LocalDate date;
     private Set<StockTo> stocksInMarket;
     private CashTo myCash;
     private Set<StockTo> myStocks;
     
     @Before
     public void setUp() {
-        date = new LocalDate();
         myCash = new CashTo("PLN", 1, 10000);
         stocksInMarket = new HashSet<StockTo>();
         stocksInMarket.add(new StockTo("Apple", 102.4, 1));
@@ -54,8 +51,6 @@ public class ClientMockTest {
         myStocks.add(new StockTo("Windows", 11.1, 1));
         myStocks.add(new StockTo("HP", 33.3, 1));
         stockMarketSimulator = new StockMarketSimulatorImpl();
-        stockMarketSimulator.setStartDay(date);
-        stockMarketSimulator.setEndDay(date.plusDays(2));
         MockitoAnnotations.initMocks(this);
         Whitebox.setInternalState(client, "stockMarketSimulator", stockMarketSimulator);
     }
@@ -63,7 +58,7 @@ public class ClientMockTest {
     @Test
     public void shouldNotBuyStocks() {
         //given
-        Mockito.when(stockBroker.getStockPrices(date)).thenReturn(stocksInMarket);
+        Mockito.when(stockBroker.getStockPrices()).thenReturn(stocksInMarket);
         Mockito.when(cashWallet.getBalanceInPLN()).thenReturn(myCash);
         Mockito.when(strategy.chooseStockToBuy(stocksInMarket, myCash)).thenReturn(new StockTo(null, 102.4, 15));
         this.client.setUp();
@@ -77,7 +72,7 @@ public class ClientMockTest {
     @Test
     public void shouldNotSellStocks() {
         //given
-        Mockito.when(stockBroker.getStockPrices(date)).thenReturn(stocksInMarket);
+        Mockito.when(stockBroker.getStockPrices()).thenReturn(stocksInMarket);
         Mockito.when(stockWallet.getStocks()).thenReturn(myStocks);
         Mockito.when(strategy.chooseStockToSell(stocksInMarket, myStocks)).thenReturn(new StockTo(null, 102.4, 15));
         this.client.setUp();

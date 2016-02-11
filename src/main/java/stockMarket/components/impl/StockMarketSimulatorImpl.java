@@ -34,12 +34,12 @@ public class StockMarketSimulatorImpl implements StockMarketSimulator {
     }
 
     @Override
-    public void setStartDay(LocalDate date) {
+    public void setStartDate(LocalDate date) {
         this.date = date;
     }
 
     @Override
-    public void setEndDay(LocalDate endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

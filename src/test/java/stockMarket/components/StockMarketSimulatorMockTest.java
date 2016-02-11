@@ -28,8 +28,8 @@ public class StockMarketSimulatorMockTest {
     public void shouldCallClientUpdate() {
         //given
         LocalDate date = new LocalDate();
-        stockMarketSimulator.setStartDay(date);
-        stockMarketSimulator.setEndDay(date.plusDays(2));
+        stockMarketSimulator.setStartDate(date);
+        stockMarketSimulator.setEndDate(date.plusDays(2));
         stockMarketSimulator.register(client);
         //when
         stockMarketSimulator.nextDay();

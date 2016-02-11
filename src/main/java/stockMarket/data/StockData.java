@@ -1,11 +1,10 @@
-package stockMarket.components;
+package stockMarket.data;
 
 import java.util.Set;
 
 import stockMarket.model.StockTo;
 
-public interface StockMarket {
-
+public interface StockData {
+    void saveStockData();
     Set<StockTo> getStockPrices();
-
 }

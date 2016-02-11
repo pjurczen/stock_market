@@ -2,7 +2,6 @@ package stockMarket.components.impl;
 
 import java.util.Set;
 
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,8 +25,8 @@ public class StockBrokerImpl implements StockBroker {
     }
     
     @Override
-    public Set<StockTo> getStockPrices(LocalDate date) {
-        return stockMarket.getStockPrices(date);
+    public Set<StockTo> getStockPrices() {
+        return stockMarket.getStockPrices();
     }
 
     @Override

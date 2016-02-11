@@ -20,7 +20,7 @@ public class StockMarketSimulatorTest {
     public void shouldIncrementDay() {
         //given
         LocalDate startDate = new LocalDate();
-        stockMarketSimulator.setStartDay(startDate);
+        stockMarketSimulator.setStartDate(startDate);
         //when
         stockMarketSimulator.nextDay();
         int actualDay = stockMarketSimulator.getDate().getDayOfYear();
