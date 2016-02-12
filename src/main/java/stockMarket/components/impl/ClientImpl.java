@@ -1,8 +1,7 @@
 package stockMarket.components.impl;
 
+import java.util.HashSet;
 import java.util.Set;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,11 +9,12 @@ import org.springframework.stereotype.Component;
 import stockMarket.components.Client;
 import stockMarket.components.Observer;
 import stockMarket.components.StockBroker;
-import stockMarket.model.CashTo;
+import stockMarket.exceptions.NoEndDateSpecifiedException;
 import stockMarket.model.CashWallet;
-import stockMarket.model.StockTo;
 import stockMarket.model.StockWallet;
 import stockMarket.strategy.Strategy;
+import stockMarket.to.CashTo;
+import stockMarket.to.StockTo;
 
 @Component("client")
 public class ClientImpl extends Observer implements Client {
@@ -34,50 +34,43 @@ public class ClientImpl extends Observer implements Client {
         this.stockBroker = stockBroker;
     }
     
-    @PostConstruct
-    public void setUp() {
+    @Override
+    public void update() {
+        sell();
+        buy();
         try {
-            currentStocksInMarket = stockBroker.getStockPrices();
-        } catch (NullPointerException e) {
+            stockMarketSimulator.nextDay();
+        } catch (NoEndDateSpecifiedException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void update() {
-        setUp();
-        sell();
-        buy();
-        stockMarketSimulator.nextDay();
-    }
-
-    @Override
     public void buy() {
+        currentStocksInMarket = stockBroker.getStockPrices();
         CashTo myCash = cashWallet.getBalanceInPLN();
-        StockTo stockToBuy = strategy.chooseStockToBuy(currentStocksInMarket, myCash);
-        while(stockToBuy.getCompanyName() != null) {
+        Set<StockTo> stocksToBuy = strategy.chooseStocksToBuy(currentStocksInMarket, myCash);
+        for(StockTo stockToBuy : stocksToBuy) {
             StockTo stockToBuyOffered = stockBroker.getBuyingOffer(stockToBuy);
-            if(strategy.confirmBuyingDecision(stockToBuyOffered)) {
+            if(strategy.confirmBuyingDecision(stockToBuyOffered) &&
+                    (stockToBuyOffered.getAmmount()*stockToBuyOffered.getValue() < myCash.getAmmount())) {
                 cashWallet.withdraw(stockBroker.buyStock());
                 stockWallet.addStocks(stockToBuyOffered);
             }
-            myCash = cashWallet.getBalanceInPLN();
-            stockToBuy = strategy.chooseStockToBuy(currentStocksInMarket, myCash);
         }
     }
 
     @Override
     public void sell() {
+        currentStocksInMarket = stockBroker.getStockPrices();
         Set<StockTo> myStocks = stockWallet.getStocks();
-        StockTo stockToSell = strategy.chooseStockToSell(currentStocksInMarket, myStocks);
-        while(stockToSell.getCompanyName() != null) {
+        Set<StockTo> stocksToSell = strategy.chooseStocksToSell(currentStocksInMarket, myStocks);
+        for(StockTo stockToSell : stocksToSell) {
             StockTo stockToSellOffered = stockBroker.getSellingOffer(stockToSell);
             if(strategy.confirmSellingDecision(stockToSellOffered)) {
                 cashWallet.deposit(stockBroker.sellStock());
                 stockWallet.removeStocks(stockToSellOffered);
             }
-            myStocks = stockWallet.getStocks();
-            stockToSell = strategy.chooseStockToSell(currentStocksInMarket, myStocks);
         }
     }
 
@@ -85,5 +78,14 @@ public class ClientImpl extends Observer implements Client {
     public void setStrategy(Strategy strategy) {
         this.strategy = strategy;
     }
-    
+
+    public CashTo sumUpCash() {
+        Set<StockTo> stocks = new HashSet<StockTo>(stockWallet.getStocks());
+        for(StockTo stock : stocks) {
+            stockBroker.getSellingOffer(stock);
+            cashWallet.deposit(stockBroker.sellStock());
+            stockWallet.removeStocks(stock);
+        }
+        return cashWallet.getBalanceInPLN();
+    }
 }

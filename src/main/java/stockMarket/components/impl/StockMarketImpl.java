@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import stockMarket.components.StockMarket;
 import stockMarket.data.StockData;
-import stockMarket.model.StockTo;
+import stockMarket.to.StockTo;
 
 @Component("stockMarket")
 public class StockMarketImpl implements StockMarket {

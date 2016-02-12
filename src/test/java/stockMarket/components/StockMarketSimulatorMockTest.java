@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 
 import stockMarket.components.impl.ClientImpl;
 import stockMarket.components.impl.StockMarketSimulatorImpl;
+import stockMarket.exceptions.NoEndDateSpecifiedException;
 
 public class StockMarketSimulatorMockTest {
 
@@ -27,12 +28,16 @@ public class StockMarketSimulatorMockTest {
     @Test
     public void shouldCallClientUpdate() {
         //given
-        LocalDate date = new LocalDate();
+        LocalDate date = new LocalDate(2016, 2, 10);
         stockMarketSimulator.setStartDate(date);
         stockMarketSimulator.setEndDate(date.plusDays(2));
         stockMarketSimulator.register(client);
         //when
-        stockMarketSimulator.nextDay();
+        try {
+            stockMarketSimulator.nextDay();
+        } catch (NoEndDateSpecifiedException e) {
+            e.printStackTrace();
+        }
         //then
         Mockito.verify(client, Mockito.times(1)).update();
     }

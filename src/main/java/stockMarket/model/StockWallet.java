@@ -6,6 +6,8 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
+import stockMarket.to.StockTo;
+
 @Component
 public class StockWallet {
 

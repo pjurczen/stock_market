@@ -2,8 +2,8 @@ package stockMarket.components;
 
 import java.util.Set;
 
-import stockMarket.model.CashTo;
-import stockMarket.model.StockTo;
+import stockMarket.to.CashTo;
+import stockMarket.to.StockTo;
 
 public interface StockBroker {
     Set<StockTo> getStockPrices();

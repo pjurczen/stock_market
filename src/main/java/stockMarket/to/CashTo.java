@@ -1,4 +1,4 @@
-package stockMarket.model;
+package stockMarket.to;
 
 public class CashTo {
     private String currency;

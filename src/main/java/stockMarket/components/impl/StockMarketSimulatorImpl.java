@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import stockMarket.components.Observer;
 import stockMarket.components.StockMarketSimulator;
+import stockMarket.exceptions.NoEndDateSpecifiedException;
 
 @Component("stockMarketSimulator")
 public class StockMarketSimulatorImpl implements StockMarketSimulator {
@@ -26,9 +27,9 @@ public class StockMarketSimulatorImpl implements StockMarketSimulator {
     }
 
     @Override
-    public void nextDay() {
+    public void nextDay() throws NoEndDateSpecifiedException {
         date = date.plusDays(1);
-        if(!date.equals(endDate)) {
+        if(date.isBefore(endDate)) {
             notifyAllObservers();
         }
     }
@@ -51,5 +52,10 @@ public class StockMarketSimulatorImpl implements StockMarketSimulator {
     @Override
     public void register(Observer observer) {
         observers.add(observer);
+    }
+
+    @Override
+    public void skipDate() {
+        date = date.plusDays(1);
     }
 }

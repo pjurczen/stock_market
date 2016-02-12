@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 import stockMarket.components.StockBroker;
 import stockMarket.components.StockMarket;
-import stockMarket.model.CashTo;
-import stockMarket.model.StockTo;
+import stockMarket.to.CashTo;
+import stockMarket.to.StockTo;
 
 @Component("stockBroker")
 public class StockBrokerImpl implements StockBroker {

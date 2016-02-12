@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import stockMarket.model.CashTo;
-import stockMarket.model.StockTo;
 import stockMarket.strategy.Strategy;
+import stockMarket.to.CashTo;
+import stockMarket.to.StockTo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "CommonStrategyTest-context.xml")
@@ -47,7 +47,7 @@ public class RandomStrategyTest {
     public void shouldChooseStockToBuy() {
         //given
         //when
-        StockTo stocksToBuy = strategy.chooseStockToBuy(stocks, myCash);
+        Set<StockTo> stocksToBuy = strategy.chooseStocksToBuy(stocks, myCash);
         //then
         assertNotNull(stocksToBuy);
     }
@@ -56,7 +56,7 @@ public class RandomStrategyTest {
     public void shouldChooseStockToSell() {
         //given
         //when
-        StockTo stocksToSell = strategy.chooseStockToSell(stocks, clientStocks);
+        Set<StockTo> stocksToSell = strategy.chooseStocksToSell(stocks, clientStocks);
         //then
         assertNotNull(stocksToSell);
     }

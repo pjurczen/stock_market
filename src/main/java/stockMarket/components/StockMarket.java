@@ -2,7 +2,7 @@ package stockMarket.components;
 
 import java.util.Set;
 
-import stockMarket.model.StockTo;
+import stockMarket.to.StockTo;
 
 public interface StockMarket {
 

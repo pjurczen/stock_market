@@ -1,10 +1,13 @@
 package stockMarket.data;
 
+import java.util.Map;
 import java.util.Set;
 
-import stockMarket.model.StockTo;
+import org.joda.time.LocalDate;
+
+import stockMarket.to.StockTo;
 
 public interface StockData {
-    void saveStockData();
+    void saveStockData(Map<LocalDate, Set<StockTo>> stocks);
     Set<StockTo> getStockPrices();
 }

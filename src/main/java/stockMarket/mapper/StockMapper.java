@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import stockMarket.entity.StockEntity;
-import stockMarket.model.StockTo;
+import stockMarket.to.StockTo;
 
 public class StockMapper {
     

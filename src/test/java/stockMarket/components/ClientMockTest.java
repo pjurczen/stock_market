@@ -1,5 +1,6 @@
 package stockMarket.components;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,11 +15,11 @@ import org.mockito.internal.util.reflection.Whitebox;
 import stockMarket.components.impl.ClientImpl;
 import stockMarket.components.impl.StockBrokerImpl;
 import stockMarket.components.impl.StockMarketSimulatorImpl;
-import stockMarket.model.CashTo;
 import stockMarket.model.CashWallet;
-import stockMarket.model.StockTo;
 import stockMarket.model.StockWallet;
 import stockMarket.strategy.impl.RandomStrategy;
+import stockMarket.to.CashTo;
+import stockMarket.to.StockTo;
 
 public class ClientMockTest {
     
@@ -60,13 +61,12 @@ public class ClientMockTest {
         //given
         Mockito.when(stockBroker.getStockPrices()).thenReturn(stocksInMarket);
         Mockito.when(cashWallet.getBalanceInPLN()).thenReturn(myCash);
-        Mockito.when(strategy.chooseStockToBuy(stocksInMarket, myCash)).thenReturn(new StockTo(null, 102.4, 15));
-        this.client.setUp();
+        Mockito.when(strategy.chooseStocksToBuy(stocksInMarket, myCash)).thenReturn(new HashSet<StockTo>(Arrays.asList(new StockTo(null, 102.4, 15))));
         //when
         client.buy();
         //then
         Mockito.verify(cashWallet, Mockito.times(1)).getBalanceInPLN();
-        Mockito.verify(strategy, Mockito.times(1)).chooseStockToBuy(stocksInMarket, myCash);
+        Mockito.verify(strategy, Mockito.times(1)).chooseStocksToBuy(stocksInMarket, myCash);
     }
     
     @Test
@@ -74,12 +74,12 @@ public class ClientMockTest {
         //given
         Mockito.when(stockBroker.getStockPrices()).thenReturn(stocksInMarket);
         Mockito.when(stockWallet.getStocks()).thenReturn(myStocks);
-        Mockito.when(strategy.chooseStockToSell(stocksInMarket, myStocks)).thenReturn(new StockTo(null, 102.4, 15));
-        this.client.setUp();
+        Mockito.when(strategy.chooseStocksToSell(stocksInMarket, myStocks)).thenReturn(new HashSet<StockTo>(Arrays.asList(new StockTo(null, 102.4, 15))));
+        //when
         //when
         client.sell();
         //then
         Mockito.verify(stockWallet, Mockito.times(1)).getStocks();
-        Mockito.verify(strategy, Mockito.times(1)).chooseStockToSell(stocksInMarket, myStocks);
+        Mockito.verify(strategy, Mockito.times(1)).chooseStocksToSell(stocksInMarket, myStocks);
     }
 }
