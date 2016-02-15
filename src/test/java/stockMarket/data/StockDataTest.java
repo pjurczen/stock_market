@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import stockMarket.components.StockMarketSimulator;
+import stockMarket.to.DataTo;
 import stockMarket.to.StockTo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -48,10 +49,10 @@ public class StockDataTest {
         //when
         stockMarketSimulator.setStartDate(date);
         stockData.saveStockData(stocks);
-        Set<StockTo> stock = stockData.getStockPrices();
+        DataTo stockTo = stockData.getStockPrices();
         int expectedStockSize = stocksSet.size();
         //then
-        assertNotNull(stock);
-        assertEquals(expectedStockSize, stock.size());
+        assertNotNull(stockData);
+        assertEquals(expectedStockSize, stockTo.getStocks().size());
     }
 }

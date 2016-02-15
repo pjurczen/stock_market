@@ -15,7 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import stockMarket.entity.DateEntity;
+import stockMarket.entity.DataEntity;
 import stockMarket.entity.StockEntity;
 import stockMarket.mapper.DateMapper;
 
@@ -28,7 +28,7 @@ public class StockRepositoryTest {
     
     private List<StockEntity> stocksList;
     private LocalDate date;
-    private DateEntity dateEntity;
+    private DataEntity dataEntity;
     
     @Before
     public void setUp() {
@@ -36,8 +36,8 @@ public class StockRepositoryTest {
         stocksList = new ArrayList<StockEntity>();
         stocksList.add(new StockEntity("Intel", 1));
         stocksList.add(new StockEntity("Apple", 23));
-        dateEntity = DateMapper.map(date);
-        dateEntity.setStocks(stocksList);
+        dataEntity = DateMapper.map(date);
+        dataEntity.setStocks(stocksList);
     }
     
     @Test
@@ -45,14 +45,14 @@ public class StockRepositoryTest {
     @DirtiesContext
     public void shouldFindStocksByData() {
         //given
-        stockRepository.save(dateEntity);
+        stockRepository.save(dataEntity);
         int expectedStocksSize = stocksList.size();
         //when
-        DateEntity dateEnityFromDB = stockRepository.findByDate(date.toString());
+        DataEntity dateEnityFromDB = stockRepository.findByDate(date.toString());
         List<StockEntity> stocks = dateEnityFromDB.getStocks();
         //then
         assertNotNull(stocks);
         assertEquals(expectedStocksSize, stocks.size());
-        assertEquals(dateEntity, dateEnityFromDB);
+        assertEquals(dataEntity, dateEnityFromDB);
     }
 }

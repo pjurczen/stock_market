@@ -11,11 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import stockMarket.components.StockMarketSimulator;
 import stockMarket.data.StockData;
-import stockMarket.entity.DateEntity;
+import stockMarket.entity.DataEntity;
 import stockMarket.entity.StockEntity;
 import stockMarket.mapper.DateMapper;
 import stockMarket.mapper.StockMapper;
 import stockMarket.repository.StockRepository;
+import stockMarket.to.DataTo;
 import stockMarket.to.StockTo;
 
 @Service("stockData")
@@ -33,21 +34,22 @@ public class StockDataImpl implements StockData {
     
     @Override
     @Transactional(readOnly = true)
-    public Set<StockTo> getStockPrices() {
-        DateEntity date = null;
-        date = stockRepository.findByDate(stockMarketSimulator.getDate().toString());
-        while(date == null) {
+    public DataTo getStockPrices() {
+        DataEntity data = null;
+        data = stockRepository.findByDate(stockMarketSimulator.getDate().toString());
+        while(data == null) {
             stockMarketSimulator.skipDate();
-            date = stockRepository.findByDate(stockMarketSimulator.getDate().toString());
+            data = stockRepository.findByDate(stockMarketSimulator.getDate().toString());
         }
-        return StockMapper.map2To(date.getStocks());
+        DataTo dataTo = new DataTo(StockMapper.map2To(data.getStocks()), DateMapper.map2To(data));
+        return dataTo;
     }
 
     @Override
     @Transactional(readOnly = false)
     public void saveStockData(Map<LocalDate, Set<StockTo>> stocks) {
         for(Map.Entry<LocalDate, Set<StockTo>> entry : stocks.entrySet()) {
-            DateEntity date = DateMapper.map(entry.getKey());
+            DataEntity date = DateMapper.map(entry.getKey());
             List<StockEntity> stocksSet = StockMapper.map2Entity(entry.getValue());
             date.setStocks(stocksSet);
             stockRepository.save(date);

@@ -1,13 +1,12 @@
 package stockMarket.components.impl;
 
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import stockMarket.components.StockMarket;
 import stockMarket.data.StockData;
-import stockMarket.to.StockTo;
+import stockMarket.to.DataTo;
 
 @Component("stockMarket")
 public class StockMarketImpl implements StockMarket {
@@ -20,7 +19,7 @@ public class StockMarketImpl implements StockMarket {
     }
     
     @Override
-    public Set<StockTo> getStockPrices() {
+    public DataTo getStockPrices() {
         return stockData.getStockPrices();
     }
 

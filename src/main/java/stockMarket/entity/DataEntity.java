@@ -7,8 +7,8 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "DATE")
-public class DateEntity implements Serializable {
+@Table(name = "DATA")
+public class DataEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,19 +23,19 @@ public class DateEntity implements Serializable {
     private List<StockEntity> stocks = new ArrayList<StockEntity>();
     
     // for hibernate
-    protected DateEntity() {
+    protected DataEntity() {
     }
     
+    public DataEntity(String date) {
+        this.date = date;
+    }
+
     public Long getId() {
         return id;
     }
     
     public void setId(Long id) {
         this.id = id;
-    }
-    
-    public DateEntity(String date) {
-        this.date = date;
     }
     
     public String getDate() {

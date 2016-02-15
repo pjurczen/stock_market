@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import stockMarket.strategy.Strategy;
 import stockMarket.to.CashTo;
+import stockMarket.to.DataTo;
 import stockMarket.to.StockTo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -23,9 +25,10 @@ public class RandomStrategyTest {
     @Autowired
     private Strategy strategy;
     
-    Set<StockTo> stocks;
-    Set<StockTo> clientStocks;
-    CashTo myCash;
+    private Set<StockTo> stocks;
+    private Set<StockTo> clientStocks;
+    private DataTo dataTo;
+    private CashTo myCash;
     
     @Before
     public void prepare() {
@@ -41,13 +44,14 @@ public class RandomStrategyTest {
         clientStocks.add(appleStocks);
         clientStocks.add(intelStocks);
         myCash = new CashTo("PLN", 1, 500);
+        dataTo = new DataTo(stocks, new LocalDate());
     }
     
     @Test
     public void shouldChooseStockToBuy() {
         //given
         //when
-        Set<StockTo> stocksToBuy = strategy.chooseStocksToBuy(stocks, myCash);
+        Set<StockTo> stocksToBuy = strategy.chooseStocksToBuy(dataTo, myCash);
         //then
         assertNotNull(stocksToBuy);
     }
@@ -56,7 +60,7 @@ public class RandomStrategyTest {
     public void shouldChooseStockToSell() {
         //given
         //when
-        Set<StockTo> stocksToSell = strategy.chooseStocksToSell(stocks, clientStocks);
+        Set<StockTo> stocksToSell = strategy.chooseStocksToSell(dataTo, clientStocks);
         //then
         assertNotNull(stocksToSell);
     }

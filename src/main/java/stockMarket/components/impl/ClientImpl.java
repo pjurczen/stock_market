@@ -14,6 +14,7 @@ import stockMarket.model.CashWallet;
 import stockMarket.model.StockWallet;
 import stockMarket.strategy.Strategy;
 import stockMarket.to.CashTo;
+import stockMarket.to.DataTo;
 import stockMarket.to.StockTo;
 
 @Component("client")
@@ -23,7 +24,7 @@ public class ClientImpl extends Observer implements Client {
     private StockWallet stockWallet;
     private Strategy strategy;
     private StockBroker stockBroker;
-    private Set<StockTo> currentStocksInMarket;
+    private DataTo currentStocksInMarket;
     
     @Autowired
     public ClientImpl(CashWallet cashWallet, StockWallet stockWallet,

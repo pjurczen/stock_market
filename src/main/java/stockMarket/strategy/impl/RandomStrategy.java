@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import stockMarket.strategy.Strategy;
 import stockMarket.to.CashTo;
+import stockMarket.to.DataTo;
 import stockMarket.to.StockTo;
 
 @Service("strategy")
@@ -16,9 +17,9 @@ public class RandomStrategy implements Strategy {
     private Set<StockTo> stocksToSell;
     
     @Override
-    public Set<StockTo> chooseStocksToBuy(Set<StockTo> stocks, CashTo myCash) {
+    public Set<StockTo> chooseStocksToBuy(DataTo stocksData, CashTo myCash) {
         stocksToBuy = new HashSet<StockTo>();
-        for(StockTo stock : stocks) {
+        for(StockTo stock : stocksData.getStocks()) {
             if(Math.random() > 0.5) {
                 String stockName = stock.getCompanyName();
                 double stockPrice = stock.getValue();
@@ -31,7 +32,7 @@ public class RandomStrategy implements Strategy {
     }
 
     @Override
-    public Set<StockTo> chooseStocksToSell(Set<StockTo> stocks, Set<StockTo> clientStocks) {
+    public Set<StockTo> chooseStocksToSell(DataTo stocksData, Set<StockTo> clientStocks) {
         stocksToSell = new HashSet<StockTo>();
         for(StockTo stock : clientStocks) {
             if(Math.random() > 0.5) {
