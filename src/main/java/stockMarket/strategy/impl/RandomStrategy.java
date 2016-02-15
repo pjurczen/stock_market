@@ -23,8 +23,7 @@ public class RandomStrategy implements Strategy {
             if(Math.random() > 0.5) {
                 String stockName = stock.getCompanyName();
                 double stockPrice = stock.getValue();
-                long stockAmmount = (long)(Math.random()*myCash.getAmmount()/stockPrice);
-                StockTo stockToBuy = new StockTo(stockName, stockPrice, stockAmmount);
+                StockTo stockToBuy = new StockTo(stockName, stockPrice, 0);
                 stocksToBuy.add(stockToBuy);
             }
         }
@@ -38,8 +37,7 @@ public class RandomStrategy implements Strategy {
             if(Math.random() > 0.5) {
                 String stockName = stock.getCompanyName();
                 double stockPrice = stock.getValue();
-                long stockAmmount = (long)(Math.random()*stock.getAmmount());
-                StockTo stockToSell = new StockTo(stockName, stockPrice, stockAmmount);
+                StockTo stockToSell = new StockTo(stockName, stockPrice, 0);
                 stocksToSell.add(stockToSell);
             }
         }
