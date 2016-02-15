@@ -52,7 +52,8 @@ public class ClientImpl extends Observer implements Client {
         CashTo myCash = cashWallet.getBalanceInPLN();
         Set<StockTo> stocksToBuy = strategy.chooseStocksToBuy(currentStocksInMarket, myCash);
         for(StockTo stockToBuy : stocksToBuy) {
-            StockTo stockToBuyOffered = stockBroker.getBuyingOffer(stockToBuy);
+            StockTo stockOffer = new StockTo(stockToBuy.getCompanyName(), stockToBuy.getValue(), (long)(myCash.getAmmount()/stockToBuy.getValue()));
+            StockTo stockToBuyOffered = stockBroker.getBuyingOffer(stockOffer);
             if(strategy.confirmBuyingDecision(stockToBuyOffered) &&
                     (stockToBuyOffered.getAmmount()*stockToBuyOffered.getValue() < myCash.getAmmount())) {
                 cashWallet.withdraw(stockBroker.buyStock());
@@ -82,11 +83,11 @@ public class ClientImpl extends Observer implements Client {
 
     public CashTo sumUpCash() {
         Set<StockTo> stocks = new HashSet<StockTo>(stockWallet.getStocks());
+        long stocksValue = 0;
         for(StockTo stock : stocks) {
-            stockBroker.getSellingOffer(stock);
-            cashWallet.deposit(stockBroker.sellStock());
-            stockWallet.removeStocks(stock);
+            stocksValue += stock.getAmmount()*stock.getValue();
         }
-        return cashWallet.getBalanceInPLN();
+        long totalCash = cashWallet.getBalanceInPLN().getAmmount() + stocksValue;
+        return new CashTo("PLN", 1, totalCash);
     }
 }
