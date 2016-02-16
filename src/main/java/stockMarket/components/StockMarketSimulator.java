@@ -2,6 +2,7 @@ package stockMarket.components;
 
 import org.joda.time.LocalDate;
 
+import stockMarket.components.impl.Observer;
 import stockMarket.exceptions.NoEndDateSpecifiedException;
 
 public interface StockMarketSimulator {

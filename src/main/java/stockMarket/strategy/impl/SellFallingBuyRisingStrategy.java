@@ -82,7 +82,6 @@ public class SellFallingBuyRisingStrategy implements Strategy {
         return stocksToSell;
     }
     
-    
     private boolean checkIfPriceIsDescending(StockTo todaysStock, StockTo yesterdaysStock, StockTo dayBeforeYesterdayStock) {
         if(yesterdaysStock != null && todaysStock != null) {
             if(todaysStock.getValue() >= yesterdaysStock.getValue()) {

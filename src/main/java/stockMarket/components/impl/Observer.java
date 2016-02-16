@@ -1,6 +1,8 @@
-package stockMarket.components;
+package stockMarket.components.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import stockMarket.components.StockMarketSimulator;
 
 public abstract class Observer {
     @Autowired

@@ -6,7 +6,6 @@ import java.util.List;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Component;
 
-import stockMarket.components.Observer;
 import stockMarket.components.StockMarketSimulator;
 import stockMarket.exceptions.NoEndDateSpecifiedException;
 

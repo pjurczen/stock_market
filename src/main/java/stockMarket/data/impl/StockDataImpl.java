@@ -41,8 +41,7 @@ public class StockDataImpl implements StockData {
             stockMarketSimulator.skipDate();
             data = stockRepository.findByDate(stockMarketSimulator.getDate().toString());
         }
-        DataTo dataTo = new DataTo(StockMapper.map2To(data.getStocks()), DateMapper.map2To(data));
-        return dataTo;
+        return new DataTo(StockMapper.map2To(data.getStocks()), DateMapper.map2To(data));
     }
 
     @Override
