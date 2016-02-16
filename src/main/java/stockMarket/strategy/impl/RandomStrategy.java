@@ -50,7 +50,7 @@ public class RandomStrategy implements Strategy {
                                                     .filter(x -> x.equals(stock))
                                                     .findFirst()
                                                     .get()
-                                                    .getValue()*1.01) ? true : false;
+                                                    .getValue()*1.01);
     }
 
     @Override
@@ -59,6 +59,6 @@ public class RandomStrategy implements Strategy {
                                                     .filter(x -> x.equals(stock))
                                                     .findFirst()
                                                     .get()
-                                                    .getValue()*0.99) ? true : false;
+                                                    .getValue()*0.99);
     }
 }

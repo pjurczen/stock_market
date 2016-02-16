@@ -32,6 +32,12 @@ public class DataLoader {
                 double stockValue = Double.parseDouble(splittedText[2]);
                 LocalDate date = new LocalDate(year, month, day);
                 StockTo stock = new StockTo(stockName, stockValue, 0);
+                
+//                if(!stocks.containsKey(date))
+//                    stocks.put(date, new HashSet<StockTo>());
+//                
+//                stocks.get(date).add(stock);
+                
                 if(stocks.containsKey(date)) {
                     stocksSet = stocks.get(date);
                     stocks.remove(date);
